@@ -16,8 +16,8 @@ class RegisterAllocator:
         
     def initialize(self, live_ranges):
         """
-        Initialize the register allocator with live ranges
-        live_ranges: List of (variable_name, start_point, end_point)
+        Initialize the register allocator with live ranges.
+        live_ranges: List of (variable_name, start_point, end_point).
         """
         self.interference_graph.build_from_live_ranges(live_ranges)
         self.graph_coloring = GraphColoring(self.interference_graph, self.num_registers)
@@ -27,8 +27,8 @@ class RegisterAllocator:
         
     def allocate_registers(self):
         """
-        Main register allocation algorithm
-        Returns: Dict of variable_name -> register_number or 'spilled'
+        Main register allocation algorithm.
+        Returns: Dict of variable_name -> register_number or 'spilled'.
         """
         allocation = {}
         max_attempts = 3  # Limit number of spilling attempts
@@ -53,51 +53,7 @@ class RegisterAllocator:
             allocation[var_name] = 'spilled'
         return allocation
 
-def main():
-    # Example usage
-    print("Register Allocator")
-    print("=================")
-    
-    # Example live ranges
-    live_ranges = [
-        ("a", 0, 10),  # Variable 'a' lives from point 0 to 10
-        ("b", 2, 8),   # Variable 'b' lives from point 2 to 8
-        ("c", 5, 15),  # Variable 'c' lives from point 5 to 15
-        ("d", 7, 12),  # Variable 'd' lives from point 7 to 12
-        ("e", 9, 14)   # Variable 'e' lives from point 9 to 14
-    ]
-    
-    # Create allocator with 3 physical registers
-    num_registers = 3
-    allocator = RegisterAllocator(num_registers)
-    
-    print(f"\nAllocating registers for {len(live_ranges)} variables using {num_registers} registers...")
-    
-    # Initialize with live ranges
-    allocator.initialize(live_ranges)
-    
-    # Perform allocation
-    allocation = allocator.allocate_registers()
-    
-    # Visualize results
-    visualize_allocation(allocation, num_registers)
-    
-    # Print detailed allocation information
-    print("\nDetailed Allocation Information:")
-    print("--------------------------------")
-    for var_name, register in allocation.items():
-        if register == 'spilled':
-            print(f"Variable {var_name}: Spilled to memory")
-        else:
-            print(f"Variable {var_name}: Assigned to register {register}")
-            
-    # Print interference information
-    print("\nInterference Information:")
-    print("------------------------")
-    for var_name in allocator.interference_graph.variables:
-        var = allocator.interference_graph.variables[var_name]
-        interfering_vars = list(var.interferences)
-        print(f"Variable {var_name} interferes with: {', '.join(interfering_vars) if interfering_vars else 'none'}")
 
 if __name__ == "__main__":
-    main()
+    # The main code can be executed here, or used by other modules and tests.
+    pass

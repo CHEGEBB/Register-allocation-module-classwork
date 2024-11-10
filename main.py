@@ -56,9 +56,7 @@ class RegisterAllocator:
 def main():
     print("Register Allocator Module")
     print("==========================")
-    
-    # This will be run independently without example live data
-    # Proper tests will be handled in the test script
+
     
 if __name__ == "__main__":
     main()

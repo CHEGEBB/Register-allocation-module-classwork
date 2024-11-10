@@ -1,4 +1,3 @@
-# graph_coloring.py
 class GraphColoring:
     def __init__(self, interference_graph, num_registers):
         self.graph = interference_graph

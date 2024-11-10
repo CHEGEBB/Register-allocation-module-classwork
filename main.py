@@ -17,7 +17,7 @@ class RegisterAllocator:
     def initialize(self, live_ranges):
         """
         Initialize the register allocator with live ranges.
-        live_ranges: List of (variable_name, start_point, end_point).
+        live_ranges: List of (variable_name, start_point, end_point)
         """
         self.interference_graph.build_from_live_ranges(live_ranges)
         self.graph_coloring = GraphColoring(self.interference_graph, self.num_registers)
@@ -28,7 +28,7 @@ class RegisterAllocator:
     def allocate_registers(self):
         """
         Main register allocation algorithm.
-        Returns: Dict of variable_name -> register_number or 'spilled'.
+        Returns: Dict of variable_name -> register_number or 'spilled'
         """
         allocation = {}
         max_attempts = 3  # Limit number of spilling attempts
@@ -47,13 +47,18 @@ class RegisterAllocator:
                 
             # Handle spilling
             self.spill_handler.handle_spills(spill_candidates)
-            
+        
         # If we reach here, we couldn't allocate after max attempts
         for var_name in self.interference_graph.variables:
             allocation[var_name] = 'spilled'
         return allocation
 
-
+def main():
+    print("Register Allocator Module")
+    print("==========================")
+    
+    # This will be run independently without example live data
+    # Proper tests will be handled in the test script
+    
 if __name__ == "__main__":
-    # The main code can be executed here, or used by other modules and tests.
-    pass
+    main()

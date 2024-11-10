@@ -9,6 +9,10 @@ class GraphColoring:
         Implements graph coloring using Chaitin's algorithm
         Returns: (success, spill_candidates)
         """
+        for var in self.graph.variables:
+            # Ensure all nodes are either colored or marked for spilling
+            if len(self.colors) >= self.num_registers:
+                return False, [var for var in self.graph.variables if var not in self.colors]
         stack = []
         remaining_nodes = set(self.graph.variables.keys())
         spill_candidates = set()

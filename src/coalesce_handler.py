@@ -3,21 +3,12 @@ class CoalesceHandler:
     def __init__(self, interference_graph):
         self.graph = interference_graph
         
-    def can_coalesce(self, var1_name, var2_name):
-        """Check if two variables can be coalesced"""
-        var1 = self.graph.variables[var1_name]
-        var2 = self.graph.variables[var2_name]
-        
-        # Cannot coalesce if they interfere
-        if var2_name in var1.interferences:
-            return False
-            
-        # Cannot coalesce if combined interference set would be too large
-        combined_interferences = var1.interferences.union(var2.interferences)
-        if len(combined_interferences) >= len(self.graph.variables):
-            return False
-            
-        return True
+    def can_coalesce(self, var1, var2):
+        v1 = self.graph.variables[var1]
+        v2 = self.graph.variables[var2]
+        # Check for overlap
+        return not (v1.start_point < v2.end_point and v2.start_point < v1.end_point)
+
         
     def coalesce_variables(self, var1_name, var2_name):
         """

@@ -3,7 +3,6 @@ def visualize_allocation(allocation, num_registers):
     print("\nRegister Allocation Results:")
     print("-" * 40)
     
-    # Group by register
     by_register = {}
     spilled = []
     
@@ -14,11 +13,12 @@ def visualize_allocation(allocation, num_registers):
             if reg not in by_register:
                 by_register[reg] = []
             by_register[reg].append(var)
-            
-    # Print register assignments
-    for reg in range(num_registers):
-        vars_in_reg = by_register.get(reg, [])
-        print(f"Register {reg}: {', '.join(vars_in_reg) if vars_in_reg else '(empty)'}")
-        
-    # Print spilled variables
-    print("\nSpilled Variables:", ', '.join(spilled) if spilled else "(none)")
+    
+    for reg in range(num_registers):  # Fixed line
+        if reg in by_register:
+            print(f"Register {reg}: {', '.join(by_register[reg])}")
+        else:
+            print(f"Register {reg}: (empty)")
+    
+    if spilled:
+        print("Spilled Variables:", ", ".join(spilled))

@@ -1,10 +1,10 @@
 import pytest
-from src.interference_graph import InterferenceGraph, Variable
-from src.graph_coloring import GraphColoring
-from src.spill_handler import SpillHandler
-from src.coalesce_handler import CoalesceHandler
-from src.live_range_splitter import LiveRangeSplitter
-from src.utils import visualize_allocation
+from interference_graph import InterferenceGraph, Variable
+from graph_coloring import GraphColoring
+from spill_handler import SpillHandler
+from coalesce_handler import CoalesceHandler
+from live_range_splitter import LiveRangeSplitter
+from utils import visualize_allocation
 from main import RegisterAllocator
 
 # =========================

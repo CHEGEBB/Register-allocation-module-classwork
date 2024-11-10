@@ -127,9 +127,20 @@ def test_register_allocator_allocate_registers():
     live_ranges = [("x", 0, 10), ("y", 5, 15), ("z", 12, 20)]
     allocator.initialize(live_ranges)
     allocation = allocator.allocate_registers()
-    assert allocation["x"] != allocation["y"]
-    assert allocation["y"] != allocation["z"]
-    assert allocation["x"] != allocation["z"]
+    
+    # Variables with overlapping ranges must have different registers
+    assert allocation["x"] != allocation["y"]  # x and y overlap
+    assert allocation["y"] != allocation["z"]  # y and z overlap
+    
+    # Ensure no variable is spilled unnecessarily
+    assert allocation["x"] != 'spilled'
+    assert allocation["y"] != 'spilled'
+    assert allocation["z"] != 'spilled'
+    
+    # Verify all registers are within bounds
+    for var, reg in allocation.items():
+        if reg != 'spilled':
+            assert 0 <= reg < 2
 
 # =========================
 # Tests for visualize_allocation utility

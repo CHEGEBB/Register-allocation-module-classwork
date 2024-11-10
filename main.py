@@ -1,17 +1,3 @@
-# Project structure:
-# │
-# ├── main.py
-# ├── src/
-# │   ├── __init__.py
-# │   ├── interference_graph.py
-# │   ├── graph_coloring.py
-# │   ├── spill_handler.py
-# │   ├── coalesce_handler.py
-# │   ├── live_range_splitter.py
-# │   └── utils.py
-# └── README.md
-
-# main.py
 from src.interference_graph import InterferenceGraph
 from src.graph_coloring import GraphColoring
 from src.spill_handler import SpillHandler

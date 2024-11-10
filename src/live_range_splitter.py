@@ -1,4 +1,3 @@
-# live_range_splitter.py
 class LiveRangeSplitter:
     def __init__(self, interference_graph):
         self.graph = interference_graph

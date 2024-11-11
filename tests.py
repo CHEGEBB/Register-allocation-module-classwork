@@ -207,6 +207,26 @@ def test_allocator_performance(test_live_ranges, num_registers):
     print(f"Naive Allocator Spills: {naive_spills}")
     print(f"Custom Allocator Spill rate: {custom_spills / len(test_live_ranges) * 100:.2f}%")
     print(f"Naive Allocator Spill rate: {naive_spills / len(test_live_ranges) * 100:.2f}%")
+    print(f"Custom Allocator Time: {custom_time:.6f} seconds")
+    print(f"Naive Allocator Time: {naive_time:.6f} seconds")
+    print(f"Custom Allocator Time per variable: {custom_time / len(test_live_ranges):.6f} seconds")
+    print(f"Naive Allocator Time per variable: {naive_time / len(test_live_ranges):.6f} seconds")
+
+    # Table
+    print("\nComparison Table:")
+    print("=================")
+    print("Variable | Custom Alloc | Naive Alloc")
+    print("---------|--------------|------------")
+    for var_name in custom_allocation:
+        print(f"{var_name:8} | {custom_allocation[var_name]:12} | {naive_allocation[var_name]:10}")
+    
+    # Visualize allocation
+    print("\nCustom Allocator Allocation:")
+    print("=============================")
+    visualize_allocation(custom_allocation, num_registers)
+    print("\nNaive Allocator Allocation:")
+    print("============================")
+    visualize_allocation(naive_allocation, num_registers)
 
 # =========================
 # Main test runner

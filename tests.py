@@ -1,4 +1,5 @@
 import pytest
+import time
 from interference_graph import InterferenceGraph, Variable
 from graph_coloring import GraphColoring
 from spill_handler import SpillHandler
@@ -6,6 +7,7 @@ from coalesce_handler import CoalesceHandler
 from live_range_splitter import LiveRangeSplitter
 from utils import visualize_allocation
 from main import RegisterAllocator
+from naive_allocator import NaiveAllocator
 
 # =========================
 # Tests for InterferenceGraph
@@ -153,3 +155,68 @@ def test_visualize_allocation(capsys):
     assert "Register 0: x" in captured.out
     assert "Register 1: y" in captured.out
     assert "Spilled Variables: z" in captured.out
+
+# =========================
+# Benchmark against NaiveAllocator
+# =========================
+
+# Fixtures to set up test data
+@pytest.fixture
+def test_live_ranges():
+    return [
+        ("a", 0, 10), ("b", 5, 15), ("c", 12, 20), ("d", 18, 25),
+        ("e", 2, 8), ("f", 7, 13), ("g", 11, 19), ("h", 17, 22)
+    ]
+
+@pytest.fixture
+def num_registers():
+    return 3
+
+def benchmark_allocator(allocator, live_ranges):
+    """
+    Helper function to benchmark allocator performance.
+    Returns allocation result, time taken, and spill count.
+    """
+    start_time = time.time()
+    try:
+        allocator.initialize(live_ranges)
+        allocation = allocator.allocate_registers()
+    except AttributeError:
+        allocation = allocator.allocate_registers(live_ranges)
+    time_taken = time.time() - start_time
+    spills = sum(1 for reg in allocation.values() if reg == 'spilled')
+    return allocation, time_taken, spills
+
+def test_allocator_performance(test_live_ranges, num_registers):
+    # Custom allocator
+    register_allocator = RegisterAllocator(num_registers)
+    register_allocator.initialize(test_live_ranges)
+    custom_allocation, custom_time, custom_spills = benchmark_allocator(register_allocator, test_live_ranges)
+
+    # Naive allocator
+    naive_allocator = NaiveAllocator(num_registers)
+    naive_allocation, naive_time, naive_spills = benchmark_allocator(naive_allocator, test_live_ranges)
+
+    # Assertions to check performance criteria
+    assert custom_spills <= naive_spills, "Custom allocator should have fewer or equal spills than naive allocator"
+
+    # Optionally, print results if running the test manually for debugging
+    print("\nBenchmark Results:")
+    print("===================")
+    print(f"Custom Allocator Spills: {custom_spills}")
+    print(f"Naive Allocator Spills: {naive_spills}")
+    print(f"Custom Allocator Spill rate: {custom_spills / len(test_live_ranges) * 100:.2f}%")
+    print(f"Naive Allocator Spill rate: {naive_spills / len(test_live_ranges) * 100:.2f}%")
+
+# =========================
+# Main test runner
+# =========================
+if __name__ == "__main__":
+    pytest.main(args=["-v", "tests.py"])
+    # Print benchmark results
+    test_live_ranges = [
+        ("a", 0, 10), ("b", 5, 15), ("c", 12, 20), ("d", 18, 25),
+        ("e", 2, 8), ("f", 7, 13), ("g", 11, 19), ("h", 17, 22)
+    ]
+    num_registers = 3
+    test_allocator_performance(test_live_ranges, num_registers)

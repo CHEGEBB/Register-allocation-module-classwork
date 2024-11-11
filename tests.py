@@ -202,15 +202,15 @@ def test_allocator_performance(test_live_ranges, num_registers):
 
     # Optionally, print results if running the test manually for debugging
     print("\nBenchmark Results:")
-    print("===================")
-    print(f"Custom Allocator Spills: {custom_spills}")
-    print(f"Naive Allocator Spills: {naive_spills}")
-    print(f"Custom Allocator Spill rate: {custom_spills / len(test_live_ranges) * 100:.2f}%")
-    print(f"Naive Allocator Spill rate: {naive_spills / len(test_live_ranges) * 100:.2f}%")
-    print(f"Custom Allocator Time: {custom_time:.6f} seconds")
-    print(f"Naive Allocator Time: {naive_time:.6f} seconds")
-    print(f"Custom Allocator Time per variable: {custom_time / len(test_live_ranges):.6f} seconds")
-    print(f"Naive Allocator Time per variable: {naive_time / len(test_live_ranges):.6f} seconds")
+    print("=" * 65)
+    print(f"{'Metric':<30} | {'Custom Allocator':<15} | {'Naive Allocator'}")
+    print("-" * 65)
+    print(f"{'Spills':<30} | {custom_spills:<15}  | {naive_spills}")
+    print(f"{'Spill Rate (%)':<30} | {custom_spills / len(test_live_ranges) * 100:.2f}%           | {naive_spills / len(test_live_ranges) * 100:.2f}%")
+    print(f"{'Total Time (seconds)':<30} | {custom_time:<15.6f}  | {naive_time:.6f}")
+    print(f"{'Time per Variable (seconds)':<30} | {custom_time / len(test_live_ranges):<15.6f}  | {naive_time / len(test_live_ranges):.6f}")
+    print("=" * 65)
+
 
     # Table
     print("\nComparison Table:")
